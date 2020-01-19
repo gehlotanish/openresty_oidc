@@ -37,7 +37,7 @@ docker run \
   -e PROXY_PORT=80 \
   -e PROXY_PROTOCOL=http \
   -p 80:80 \
-  evry/oidc-proxy
+  oidc:latest
 ```
 
 ## License
