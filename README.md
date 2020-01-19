@@ -1,0 +1,68 @@
+
+Docker Image for OpenID Connect proxy authentication. Useful for putting
+services behind Keycloak and other OpenID Connect authentication.
+
+This is Image used Nginx for proxying request and OpenResty with the
+`lua-resty-openidc` library to handle OpenID Connect authentication.
+
+## How to use this image
+
+This proxy is controlled through environment variables, so there is no need to
+mess with any configuration files unless you want to of course. The following
+environment variables is used in this image:
+
+* `OID_SESSION_SECRET`: secret value for cookie sessions
+* `OID_SESSION_CHECK_SSI`: check SSI or not (`on` or `off`)
+* `OID_SESSION_NAME`: cookie session name
+
+* `OID_REDIRECT_PATH`: Redirect path after authentication
+* `OID_DISCOVERY`: OpenID provider well-known discovery URL
+* `OID_CLIENT_ID`: OpenID Client ID
+* `OID_CLIENT_SECRET`: OpenID Client Secret
+* `OIDC_AUTH_METHOD`: OpenID Connect authentication method (`client_secret_basic` or `client_secret_post`)
+* `OIDC_RENEW_ACCESS_TOKEN_ON_EXPIERY`: Enable silent renew of access token (`true` or `false`)
+
+* `PROXY_HOST`: Host name of the service to proxy
+* `PROXY_PORT`: Port of the service to proxy
+* `PROXY_PROTOCOL`: Protocol to the service to proxy (`http` or `https`)
+
+* `ADD_HOST_HEADER`: pass the proxy host header downstream (`true` or `false`)
+
+```
+docker run \
+  -e OID_DISCOVERY=https://my-auth-server/auth \
+  -e OID_CLIENT_ID=my-client \
+  -e OID_CLIENT_SECRET=my-secret \
+  -e PROXY_HOST=my-service \
+  -e PROXY_PORT=80 \
+  -e PROXY_PROTOCOL=http \
+  -p 80:80 \
+  evry/oidc-proxy
+```
+
+## License
+
+Software contained in this image is licensed under the following:
+
+* docker-openresty: [BSD 2-clause "Simplified" License](https://github.com/openresty/docker-openresty/blob/master/COPYRIGHT)
+* lua-resty-http: [BSD 2-clause "Simplified" License](https://github.com/pintsized/lua-resty-http/blob/master/LICENSE)
+* lua-resty-jwt: [Apache License 2.0](https://github.com/cdbattags/lua-resty-jwt/blob/master/LICENSE.txt)
+* lua-resty-openidc: [Apache License 2.0](https://github.com/pingidentity/lua-resty-openidc/blob/master/LICENSE.txt)
+* lua-resty-session: [BSD 2-clause "Simplified" License](https://github.com/bungle/lua-resty-session/blob/master/LICENSE)
+* lua-resty-hmac: [BSD 2-clause "Simplified" License](https://github.com/jkeys089/lua-resty-hmac/#copyright-and-license)
+
+## Supported Docker versions
+
+This image is officially supported on Docker version 1.12.
+
+Support for older versions (down to 1.0) is provided on a best-effort basis.
+
+## User Feedback
+
+### Documentation
+
+* [Docker](http://docs.docker.com)
+* [nginx](http://nginx.org/en/docs/)
+* [OpenResty](http://openresty.org/)
+* [lua-resty-openidc](https://github.com/pingidentity/lua-resty-openidc#readme)
+
